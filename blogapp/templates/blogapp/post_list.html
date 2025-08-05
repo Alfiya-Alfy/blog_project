@@ -1,0 +1,16 @@
+{% extends 'blogapp/base.html' %}
+{% block title %}All Posts{% endblock %}
+{% block content %}
+<h2>All Blog Posts</h2>
+{% for post in posts %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4>{{ post.title }}</h4>
+      <p>{{ post.content|truncatewords:25 }}</p>
+      <a href="{% url 'post-detail' post.pk %}" class="btn btn-primary btn-sm">Read More</a>
+    </div>
+  </div>
+{% empty %}
+  <p>No blog posts available.</p>
+{% endfor %}
+{% endblock %}

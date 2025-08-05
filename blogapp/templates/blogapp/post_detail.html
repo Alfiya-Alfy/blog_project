@@ -1,0 +1,35 @@
+{% extends 'blogapp/base.html' %}
+{% block title %}Post Detail{% endblock %}
+{% block content %}
+  <div class="container">
+    <h2>{{ post.title }}</h2>
+    <p class="text-muted">By {{ post.author }} on {{ post.created_at }}</p>
+    <hr>
+    {% if post.image %}
+    <img src="{{ post.image.url }}" class="img-fluid" alt="Post Image">
+    {% endif %}
+    <p>{{ post.content }}</p>
+    
+    <hr>
+    <h4>Comments</h4>
+    {% for comment in comments %}
+      <div class="border p-2 mb-2">
+        <strong>{{ comment.user }}</strong>: {{ comment.body }}
+        <div class="text-muted small">{{ comment.created_at }}</div>
+      </div>
+    {% empty %}
+      <p>No comments yet.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+      <h5>Add a comment</h5>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary btn-sm" type="submit">Post Comment</button>
+      </form>
+    {% else %}
+      <p><a href="{% url 'login' %}">Log in</a> to post a comment.</p>
+    {% endif %}
+  </div>
+{% endblock %}
